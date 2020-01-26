@@ -1,0 +1,118 @@
+﻿<Window x:Class="Proto.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Proto" Height="500" Width="600" Icon="editor.ico">
+
+    <Window.Resources>
+        <RoutedUICommand x:Key="MyCommand"/>
+        <RoutedUICommand x:Key="SuffixCommand"/>
+        <RoutedUICommand x:Key="Empty"/>
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Open" Executed="Open_Executed" />
+        <CommandBinding Command="ApplicationCommands.Save" Executed="Save_Executed" />
+        <CommandBinding Command="{StaticResource MyCommand}" Executed="CommandBinding_Executed"/>
+        <CommandBinding Command="{StaticResource SuffixCommand}" Executed="Suffix_Executed" />
+        <CommandBinding Command="{StaticResource Empty}" Executed="EmptyExe" />
+    </Window.CommandBindings>
+
+
+    
+    <DockPanel>
+        
+        <!--Symbol toolbar to be changed-->
+        <ToolBar DockPanel.Dock="Top">
+            <Button Content ="Open" Command="ApplicationCommands.Open">
+               
+            </Button>
+            <Button Content="Save"  Command="ApplicationCommands.Save">
+
+            </Button>
+            <Button Content="Save As"  Click="Button_Click">
+
+            </Button>
+            <Separator />
+            <ToggleButton Content="Bold" Command="EditingCommands.ToggleBold" Name="btnBold">
+               
+            </ToggleButton>
+            <ToggleButton Content="Italic" Command="EditingCommands.ToggleItalic" Name="btnItalic">
+
+            </ToggleButton>
+            <ToggleButton Content="Underline" Command="EditingCommands.ToggleUnderline" Name="btnUnderline">
+
+            </ToggleButton>
+            <Button Content="Help" Click="btnHelp_Click" Name="btnHelp">
+
+            </Button>
+            <Separator />
+            <!--Font, Size-->
+            <ComboBox Name="cmbFontFamily" Width="150"  SelectionChanged="cmbFontFamily_SelectionChanged" />
+            <ComboBox Name="cmbFontSize" Width="50" IsEditable="True" TextBoxBase.TextChanged="cmbFontSize_TextChanged" />
+        </ToolBar>
+
+        <!--Terminal-->
+
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="10*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="TerminalSymbol" Background="#f30" 
+                     Grid.Column="0" BorderThickness="0" IsReadOnly="False">
+                
+            </TextBox>
+
+            <!--Terminal-->
+            <TextBox x:Name="Terminal"  Background="#eee" Grid.Column="1" BorderThickness="0">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Return" 
+                    Command="{StaticResource MyCommand}"
+                    />
+                </TextBox.InputBindings>
+            </TextBox>
+
+            
+        </Grid>
+
+
+
+
+        <!--The text area-->
+        <TextBox x:Name="SuffixColumns" DockPanel.Dock="Right" BorderThickness="0" IsReadOnly="True"  >
+
+        </TextBox>
+
+        <TextBox x:Name="SuffixBox" DockPanel.Dock="Right"  >
+            <TextBox.InputBindings>
+                <KeyBinding Key="Return" 
+                    Command="{StaticResource SuffixCommand}"
+                    />
+                <KeyBinding Key="Backspace" 
+                    Command="{StaticResource Empty}"
+                    />
+            </TextBox.InputBindings>
+        </TextBox>
+
+
+        <RichTextBox   Name="rtbEditor"   IsReadOnly="False" BorderThickness="0" VerticalScrollBarVisibility="Auto">
+
+            <FlowDocument PageWidth="99999">
+                
+            </FlowDocument>
+            <!--Text area style-->
+            <RichTextBox.Resources>
+                
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                    
+                </Style>
+                
+            </RichTextBox.Resources>
+
+
+        </RichTextBox>
+
+    </DockPanel>
+</Window>
